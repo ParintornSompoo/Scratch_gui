@@ -18,6 +18,20 @@ class Box {
     }
     return false;
   }
+  void checkEdge() {
+    if (x <= width/10) {
+      x = width/10;
+    }
+    if (x+w >= width*3/4) {
+      x = width*3/4 - w;
+    }
+    if (y < 0) {
+      y = 0;
+    }
+    if (y+h > height) {
+      y = height - h;
+    }
+  }
   void display() {
     if (type.equals("oneLine")) {
       fill(0, 100, 200);
@@ -29,7 +43,7 @@ class Box {
       fill(0, 200, 100);
     }
     rect(x,y,w,h);
-    fill(0);
+    fill(0,255,255);
     textSize(16);
     text(command,x,y+20);
   }

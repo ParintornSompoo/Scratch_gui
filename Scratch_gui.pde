@@ -42,5 +42,6 @@ void mouseDragged() {
       cB.x += mouseX - pmouseX;
       cB.y += mouseY - pmouseY;
     }
+    cB.checkEdge();
   }
 }
