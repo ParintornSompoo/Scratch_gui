@@ -1,13 +1,18 @@
 Menu menu;
+Cat cat;
+PImage img;
 ArrayList<Box> commandBox;
 void setup() {
-  size(800,600);
+  size(1500,900);
   menu = new Menu();
   commandBox = new ArrayList<Box>();
+  img = loadImage("ScratchCat.png");
 }
 void draw() {
   background(255);
+  image(img, width*3/4, height*1/4,100,100);
   menu.display();
+  //cat.cat_move(5);
   for (int i=0;commandBox.size()>i;i++) {
     Box cB = commandBox.get(i);
     cB.display();
