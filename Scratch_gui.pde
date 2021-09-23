@@ -19,7 +19,6 @@ void draw() {
   cat.display();
 }
 void mousePressed() {
-  cat.move(-20,-50);
   for (int i=0;menu.boxes.size()>i;i++) {
     Box b = menu.boxes.get(i);
     if (b.inBox(mouseX,mouseY)) {
@@ -31,7 +30,7 @@ void mousePressed() {
           y += 45;
         }
       }
-      Box cB = new Box(x-60,y-30,120,30,"oneLine");
+      Box cB = new Box(x-60,y-30,120,30,"oneLine",b.command);
       commandBox.add(cB);
     }
   }

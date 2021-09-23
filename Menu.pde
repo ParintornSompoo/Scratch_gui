@@ -2,8 +2,9 @@ class Menu {
   ArrayList<Box> boxes;
   Menu() {
     boxes = new ArrayList<Box>();
-    for (int i=1;3>=i;i++) {
-      Box b = new Box(10,25+i*40,120,30, "oneLine");
+     String[] command = {"move right 10","move left 10","move up 10","move down 10"};
+    for (int i=1;4>=i;i++) {
+      Box b = new Box(10,25+i*40,120,30, "oneLine", command[i-1]);
       boxes.add(b);
     }
   }
