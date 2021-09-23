@@ -8,9 +8,9 @@ class Box {
     h = h_;
     type = type_;
   }
-  boolean inBox() {
-    if ((mouseX > x) && ((x+w) > mouseX)) {
-      if ((mouseY > y) && ((y+h) > mouseY)) {
+  boolean inBox(float x_, float y_) {
+    if ((x_ >= x) && ((x+w) >= x_)) {
+      if ((y_ >= y) && ((y+h) >= y_)) {
         return true;
       }
       return false;
