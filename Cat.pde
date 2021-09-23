@@ -1,7 +1,35 @@
 class Cat{
-  void cat_move(int a){
-    for (int i = 0;i <= a;i++){ 
-        image(img, width*(0.75+(0.01*i)), height*0.25,100,100);
+  int x,y;
+  Cat(int x_, int y_) {
+    x = x_;
+    y = y_;
+  }
+  void move(int x_, int y_){
+    x += x_;
+    y += y_;
+    checkInBox();
+  }
+  void checkInBox() {
+    if (x+100 >= width) {
+      x = width - 100;
     }
+    if (x < (width*3/4)){
+      x = width*3/4;
+    }
+    if (y+100 >= height) {
+      y = height - 100;
+    }
+    if (y < 0) {
+      y = 0;
+    }
+  }
+  void display() {
+    drawBox();
+    translate(x,y);
+    image(img, 0, 0,100,100);
+  }
+  void drawBox() {
+    fill(230);
+    rect(width*3/4,0,width/4,height);
   }
 }

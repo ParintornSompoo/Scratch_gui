@@ -1,5 +1,5 @@
 class Box {
-  float x,y,w,h;
+  float x,y,w,h,command;
   String type;
   Box(float x_, float y_, float w_, float h_, String type_) {
     x = x_;

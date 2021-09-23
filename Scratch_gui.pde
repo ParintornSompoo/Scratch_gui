@@ -5,19 +5,18 @@ ArrayList<Box> commandBox;
 void setup() {
   size(1500,900);
   menu = new Menu();
-  cat = new Cat();
+  cat = new Cat(width*4/5,height/3);
   commandBox = new ArrayList<Box>();
   img = loadImage("ScratchCat.png");
 }
 void draw() {
   background(255);
-  image(img, width*0.75, height*0.25,100,100);
   menu.display();
-  cat.cat_move(5);
   for (int i=0;commandBox.size()>i;i++) {
     Box cB = commandBox.get(i);
     cB.display();
   }
+  cat.display();
 }
 void mousePressed() {
   for (int i=0;menu.boxes.size()>i;i++) {

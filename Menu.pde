@@ -13,9 +13,9 @@ class Menu {
   void display() {
     // draw menu
     fill(230);
-    rect(0,0,width/5,height);
-    line(0,height/3,width/5,height/3);
-    line(0,height*2/3,width/5,height*2/3);
+    rect(0,0,width/10,height);
+    line(0,height/3,width/10,height/3);
+    line(0,height*2/3,width/10,height*2/3);
     textSize(24);
     fill(0, 100, 200);
     rect(10,10,120, 30);
