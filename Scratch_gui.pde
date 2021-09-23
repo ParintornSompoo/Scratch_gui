@@ -19,6 +19,7 @@ void draw() {
   cat.display();
 }
 void mousePressed() {
+  cat.move(-20,-50);
   for (int i=0;menu.boxes.size()>i;i++) {
     Box b = menu.boxes.get(i);
     if (b.inBox(mouseX,mouseY)) {
