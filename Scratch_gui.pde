@@ -61,8 +61,10 @@ void mousePressed() {
           y += 45;
         }
       }
-      Box cB = new Box(x-60,y-30,120,30,"oneLine",b.command);
+      Box cB = new Box(x-60,y-30,120,30,b.type,b.command);
       commandBox.add(cB);
+      Tree t = new Tree(b.command);
+      arraytree.add(t);
     }
   }
 }

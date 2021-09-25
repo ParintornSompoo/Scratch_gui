@@ -2,14 +2,21 @@ class Menu {
   ArrayList<Box> boxes;
   Menu() {
     boxes = new ArrayList<Box>();
-     String[] command = {"move right 10","move left 10","move up 10","move down 10"};
-    for (int i=1;4>=i;i++) {
-      Box b = new Box(10,25+i*40,120,30, "oneLine", command[i-1]);
+    String[] commandOneLine = {"move right 10","move left 10","move up 10","move down 10"};
+    for (int i=1;commandOneLine.length>=i;i++) {
+      Box b = new Box(10,25+i*40,120,30, "oneLine", commandOneLine[i-1]);
       boxes.add(b);
     }
-  }
-  String getPos() {
-    return "null";
+    String[] commandIfElse = {"if (true)","if (true)-else","if (false)","if (false)-else"};
+    for (int i=1;commandIfElse.length>=i;i++) {
+      Box b = new Box(10,25+height/3+i*40,120,30, "if-else", commandIfElse[i-1]);
+      boxes.add(b);
+    }
+    String[] commandLoop = {"n=2","n=3","n=5","n=7"};
+    for (int i=1;commandLoop.length>=i;i++) {
+      Box b = new Box(10,25+height*2/3+i*40,120,30, "loop", commandLoop[i-1]);
+      boxes.add(b);
+    }
   }
   void display() {
     // draw menu
