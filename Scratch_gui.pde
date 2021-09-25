@@ -2,6 +2,37 @@ Menu menu;
 Cat cat;
 PImage img;
 ArrayList<Box> commandBox;
+
+// ###################### Tree Manager ##############################
+Tree tree = new Tree("null");
+ArrayList<Tree> arraytree = new ArrayList<Tree>();
+
+Tree construcIf(){
+  Tree treeif = new Tree("if");
+  return treeif;
+}
+Tree construcFor(int n, Tree child){
+  Tree treefor = new Tree("for");
+  for(int i=0; i<n; i++){
+    treefor.addchild(child);
+  }
+  return treefor;
+}
+Tree construcWalk(String way){
+  Tree treewalk = new Tree(way);
+  return treewalk;
+}
+Tree construcTurn(String side){
+  Tree treeturn = new Tree(side);
+  return treeturn;
+}
+Tree combineTree(Tree root,Tree child){
+  Tree newtree = root;
+  newtree.addchild(child);
+  return newtree;
+}
+// ##############################################################
+
 void setup() {
   size(1500,900);
   menu = new Menu();
