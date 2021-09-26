@@ -18,6 +18,14 @@ class Box {
     }
     return false;
   }
+  boolean isBelow(float x_,float y_) {
+    if ((x < x_) && (x_ < x+w)) {
+      if ((y+h < y_) && (y_ < y+2*h)) { 
+        return true;
+      }
+    }
+    return false;
+  }
   void checkEdge() {
     if (x <= width/10) {
       x = width/10;
