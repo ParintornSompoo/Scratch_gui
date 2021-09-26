@@ -1,7 +1,7 @@
 Menu menu;
 Cat cat;
-PImage img;
 ArrayList<Box> commandBox;
+PImage bin_img;
 
 // ###################### Tree Manager ##############################
 Tree tree = new Tree("null");
@@ -36,9 +36,9 @@ Tree combineTree(Tree root,Tree child){
 void setup() {
   size(1500,900);
   menu = new Menu();
-  cat = new Cat(width*4/5,height/3);
+  cat = new Cat(width*4/5,height/3,"image/ScratchCat.png");
   commandBox = new ArrayList<Box>();
-  img = loadImage("ScratchCat.png");
+  bin_img = loadImage("image/bin.png");
 }
 void draw() {
   background(255);
@@ -48,6 +48,7 @@ void draw() {
     cB.display();
   }
   cat.display();
+  image(bin_img, -150, 525,75,75);
 }
 void mousePressed() {
   for (int i=0;menu.boxes.size()>i;i++) {
@@ -76,5 +77,15 @@ void mouseDragged() {
       cB.y += mouseY - pmouseY;
     }
     cB.checkEdge();
+  }
+}
+void mouseReleased() {
+  if(mouseX>1050 && mouseX<1125 && mouseY<900 && mouseY>825){
+    for (int i=0;commandBox.size()>i;i++) {
+      Box cB = commandBox.get(i);
+      if (cB.inBox(mouseX,mouseY)) {
+        commandBox.remove(i);
+      }    
+    }
   }
 }

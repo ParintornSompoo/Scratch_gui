@@ -1,10 +1,12 @@
 class Cat{
   int x,y;
   float r;
-  Cat(int x_, int y_) {
+  PImage img;
+  Cat(int x_, int y_,String img_path) {
     x = x_;
     y = y_;
     r = 0;
+    img = loadImage(img_path);
   }
   void move(int x_, int y_){
     x += x_;
