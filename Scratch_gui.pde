@@ -64,8 +64,15 @@ void mousePressed() {
       }
       Box cB = new Box(x-60,y-30,120,30,b.type,b.command);
       commandBox.add(cB);
-      Tree t = new Tree(b.command);
-      arraytree.add(t);
+      if(b.command.substring(0,1).equals("n")){
+        arraytree.add(construcFor(0,null));
+      }
+      else if (b.command.substring(0,4).equals("move")){
+        arraytree.add(construcWalk(b.command));
+      }
+      else if(b.command.substring(0,2).equals("if")){
+        arraytree.add(construcIf());
+      }
     }
   }
 }
@@ -85,7 +92,31 @@ void mouseReleased() {
       Box cB = commandBox.get(i);
       if (cB.inBox(mouseX,mouseY)) {
         commandBox.remove(i);
+        arraytree.remove(i);
       }    
+    }
+  }
+}
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+  for (Box cB:commandBox) {
+    if (cB.inBox(mouseX,mouseY)) {
+      if (cB.command.substring(0,2).equals("if")) {
+        if (cB.child >=0) {
+          cB.child += e;
+        }
+        if (cB.child < 0) {
+          cB.child = 0;
+        }
+      }
+      if (cB.command.substring(0,2).equals("n=")) {
+        if (cB.child >=0) {
+          cB.child += e;
+        }
+        if (cB.child < 0) {
+          cB.child = 0;
+        }
+      }
     }
   }
 }
