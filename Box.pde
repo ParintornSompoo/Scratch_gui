@@ -20,9 +20,11 @@ class Box {
     }
     return false;
   }
-  boolean isBelow(float x_,float y_) {
-    if ((x < x_) && (x_ < x+w)) {
-      if ((y+h < y_) && (y_ < y+2*h)) { 
+  boolean isBelow(Box topbox) {
+    float top_x = topbox.x;
+    float top_y = topbox.y;
+    if ((x < top_x+0.25*w) && (x > top_x-0.25*w)) {
+      if ((y>top_y+h/2) && (y<top_y+1.5*h)) { 
         return true;
       }
     }

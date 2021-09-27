@@ -89,17 +89,24 @@ class Tree
     Node child = trees.getRoot();
     root.addchild(child);
   }
-  
+  Boolean haveAddedChild(){
+    if (root.getchildren().size() != 0){
+      return true;
+    }
+    return false;
+  }
   Node getRoot(){
     return root;
   }
-  
-  ArrayList<String> getCommandlist (Node root){
+  ArrayList<String> getCommandlist(){
+    return travers(root);
+  }
+  private ArrayList<String> travers (Node root){
     ArrayList<String> commands = new ArrayList<String>();
     commands.add(root.command);
     ArrayList<Node> children = root.getchildren();
     for(int i=0; i<children.size(); i++){
-      ArrayList<String> childcommandlist = getCommandlist(children.get(i));
+      ArrayList<String> childcommandlist = travers(children.get(i));
       for(int j=0; j<childcommandlist.size();j++){
         String childcommand = childcommandlist.get(j);
         if(root.command.equals("if")){

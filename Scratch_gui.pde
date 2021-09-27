@@ -22,7 +22,7 @@ Tree construcWalk(String way){
   Tree treewalk = new Tree(way);
   return treewalk;
 }
-Tree construcTurn(String side){
+Tree construcRotate(String side){
   Tree treeturn = new Tree(side);
   return treeturn;
 }
@@ -67,11 +67,14 @@ void mousePressed() {
       if(b.command.substring(0,1).equals("n")){
         arraytree.add(construcFor(0,null));
       }
+      else if(b.command.substring(0,2).equals("if")){
+        arraytree.add(construcIf());
+      }
       else if (b.command.substring(0,4).equals("move")){
         arraytree.add(construcWalk(b.command));
       }
-      else if(b.command.substring(0,2).equals("if")){
-        arraytree.add(construcIf());
+      else if(b.command.substring(0,6).equals("rotate")){
+        arraytree.add(construcRotate(b.command));
       }
     }
   }
@@ -87,13 +90,32 @@ void mouseDragged() {
   }
 }
 void mouseReleased() {
+
   if(mouseX>1050 && mouseX<1125 && mouseY<900 && mouseY>825){
     for (int i=0;commandBox.size()>i;i++) {
       Box cB = commandBox.get(i);
       if (cB.inBox(mouseX,mouseY)) {
         commandBox.remove(i);
         arraytree.remove(i);
+        return;
       }    
+    }
+  }
+  for(int i=0;commandBox.size()>i;i++){
+    Box belowbox = commandBox.get(i);
+    if(belowbox.inBox(mouseX,mouseY)){
+      for(int j=0;commandBox.size()>j;j++){
+        Box topbox = commandBox.get(j);
+        if(belowbox.isBelow(topbox)){
+          println(belowbox.command);
+          Tree temp_toptree = arraytree.get(j);          
+          temp_toptree.addchild(arraytree.get(i));
+          arraytree.set(j,temp_toptree);
+          for(Tree t : arraytree){
+          println(t.getCommandlist());
+          }          
+        }
+      }
     }
   }
 }
