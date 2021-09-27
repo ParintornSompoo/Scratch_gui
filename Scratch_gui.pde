@@ -107,13 +107,15 @@ void mouseReleased() {
       for(int j=0;commandBox.size()>j;j++){
         Box topbox = commandBox.get(j);
         if(belowbox.isBelow(topbox)){
-          println(belowbox.command);
+          //println(belowbox.command);
+          belowbox.x=topbox.x;
+          belowbox.y=topbox.y+topbox.h;
           Tree temp_toptree = arraytree.get(j);          
           temp_toptree.addchild(arraytree.get(i));
           arraytree.set(j,temp_toptree);
-          for(Tree t : arraytree){
-          println(t.getCommandlist());
-          }          
+          //for(Tree t : arraytree){
+          //println(t.getCommandlist());
+          //}          
         }
       }
     }
