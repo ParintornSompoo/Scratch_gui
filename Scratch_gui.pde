@@ -2,6 +2,7 @@ Menu menu;
 Cat cat;
 ArrayList<Box> commandBox;
 PImage bin_img;
+PImage run_button_img;
 
 // ###################### Tree Manager ##############################
 Tree tree = new Tree("null");
@@ -39,6 +40,7 @@ void setup() {
   cat = new Cat(width*4/5,height/3,"image/ScratchCat.png");
   commandBox = new ArrayList<Box>();
   bin_img = loadImage("image/bin.png");
+  run_button_img = loadImage("image/run_button.png");
 }
 void draw() {
   background(255);
@@ -49,6 +51,7 @@ void draw() {
   }
   cat.display();
   image(bin_img, -150, 525,75,75);
+  image(run_button_img, -150, -300,75,75);
 }
 void mousePressed() {
   for (int i=0;menu.boxes.size()>i;i++) {
@@ -97,25 +100,31 @@ void mouseReleased() {
       if (cB.inBox(mouseX,mouseY)) {
         commandBox.remove(i);
         arraytree.remove(i);
-        return;
       }    
     }
   }
-  for(int i=0;commandBox.size()>i;i++){
-    Box belowbox = commandBox.get(i);
-    if(belowbox.inBox(mouseX,mouseY)){
-      for(int j=0;commandBox.size()>j;j++){
-        Box topbox = commandBox.get(j);
-        if(belowbox.isBelow(topbox)){
-          //println(belowbox.command);
-          belowbox.x=topbox.x;
-          belowbox.y=topbox.y+topbox.h;
-          Tree temp_toptree = arraytree.get(j);          
-          temp_toptree.addchild(arraytree.get(i));
-          arraytree.set(j,temp_toptree);
-          //for(Tree t : arraytree){
-          //println(t.getCommandlist());
-          //}          
+  else if(mouseX>1050 && mouseX<1125 && mouseY<75 && mouseY>0){
+    cat.actualize(tree.getCommandlist());
+    println("run");
+  }
+  else{
+    for(int i=0;commandBox.size()>i;i++){
+      Box belowbox = commandBox.get(i);
+      if(belowbox.inBox(mouseX,mouseY)){
+        for(int j=0;commandBox.size()>j;j++){
+          Box topbox = commandBox.get(j);
+          if(belowbox.isBelow(topbox)){
+            //println(belowbox.command);
+            belowbox.x=topbox.x;
+            belowbox.y=topbox.y+topbox.h;
+            Tree temp_toptree = arraytree.get(j);
+            temp_toptree.addchild(arraytree.get(i));
+            arraytree.set(j,temp_toptree);
+            tree.addchild(arraytree.get(j));
+            //for(Tree t : arraytree){
+            //println(t.getCommandlist());
+            //}          
+          }
         }
       }
     }
