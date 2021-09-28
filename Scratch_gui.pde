@@ -50,8 +50,8 @@ void draw() {
     cB.display();
   }
   cat.display();
-  image(bin_img, -150, 525,75,75);
-  image(run_button_img, -150, -300,75,75);
+  image(bin_img, 1050, 825,75,75);
+  image(run_button_img, 1050, 0,75,75);
 }
 void mousePressed() {
   for (int i=0;menu.boxes.size()>i;i++) {

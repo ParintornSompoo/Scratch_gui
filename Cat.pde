@@ -49,9 +49,8 @@ class Cat{
   }
   void display() {
     drawBox();
-    translate(x,y);
     rotate(-r);
-    image(img, -50, -50,100,100);
+    image(img, -50+x, -50+y,100,100);
   }
   void drawBox() {
     fill(230);
