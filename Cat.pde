@@ -45,12 +45,18 @@ class Cat{
       else if(command.equals("move down 10")){
         move(0,10);
       }
+      else if(command.equals("rotate 30 degree")){
+        turn(PI/6);
+      }
     }
   }
   void display() {
     drawBox();
+    pushMatrix();
+    translate(x,y);
     rotate(-r);
-    image(img, -50+x, -50+y,100,100);
+    image(img, -50, -50,100,100);
+    popMatrix();
   }
   void drawBox() {
     fill(230);
