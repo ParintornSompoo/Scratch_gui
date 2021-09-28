@@ -67,8 +67,8 @@ class Box {
     rect(0,0,w,h);
     fill(0);
     textSize(14);
-    int l = command.length();
-    text(command,(w-l*8)/2,20);
+    textAlign(CENTER);
+    text(command,w/2,h/1.5);
     popMatrix();
   }
 }
