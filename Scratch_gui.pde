@@ -33,6 +33,7 @@ Tree combineTree(Tree root,Tree child){
   return newtree;
 }
 // ##############################################################
+ArrayList<Box> linkedBox;
 private ArrayList<Box> getLinkedbox(Box topbox){
   ArrayList<Box> linkedbox = new ArrayList<Box>();
   linkedbox.add(topbox);
@@ -69,6 +70,7 @@ private int getIndexToperbox(){
 // ###############################################################
 void setup() {
   size(1500,900);
+  frameRate(60);
   menu = new Menu();
   arraytree = new ArrayList<Tree>();
   cat = new Cat(width*4/5,height/3,"image/ScratchCat.png");
@@ -103,30 +105,29 @@ void mousePressed() {
       commandBox.add(cB);
     }
   }
+  for(Box clickedbox : commandBox){
+    if (clickedbox.inBox(mouseX,mouseY)) {
+      linkedBox = getLinkedbox(clickedbox);
+    }
+  }
 }
 
 void mouseDragged() {
-  for (int i=0;commandBox.size()>i;i++) {
+  if(linkedBox !=null){
     int transitionX = mouseX - pmouseX;
     int transitionY = mouseY - pmouseY;
-    Box clickedbox = commandBox.get(i);
-    if (clickedbox.inBox(mouseX,mouseY)) {
-      for(Box belowBox : getLinkedbox(clickedbox)){
-        belowBox.x += transitionX;
-        belowBox.y += transitionY;
-      }
+    for(Box belowBox : linkedBox){
+      belowBox.x += transitionX;
+      belowBox.y += transitionY;
+      belowBox.checkEdge();
     }
-    clickedbox.checkEdge();
   }
 }
 void mouseReleased() {
 
-  if(mouseX>1050 && mouseX<1125 && mouseY<900 && mouseY>825){
-    for (int i=0;commandBox.size()>i;i++) {
-      Box cB = commandBox.get(i);
-      if (cB.inBox(mouseX,mouseY)) {
-        commandBox.remove(i);
-      }
+  if(mouseX>1050 && mouseX<1125 && mouseY<900 && mouseY>825 && linkedBox != null){
+    for (Box b : linkedBox) {
+      commandBox.remove(b);
     }
   }
   else if(mouseX>1050 && mouseX<1125 && mouseY<75 && mouseY>0){
@@ -172,6 +173,9 @@ void mouseReleased() {
         }
       }
     }
+  }
+  if(linkedBox != null){
+    linkedBox.clear();
   }
 }
 void mouseWheel(MouseEvent event) {
