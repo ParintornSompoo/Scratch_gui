@@ -97,8 +97,7 @@ void mouseReleased() {
       Box cB = commandBox.get(i);
       if (cB.inBox(mouseX,mouseY)) {
         commandBox.remove(i);
-        arraytree.remove(i);
-      }    
+      }
     }
   }
   else if(mouseX>1050 && mouseX<1125 && mouseY<75 && mouseY>0){
