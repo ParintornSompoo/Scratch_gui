@@ -6,7 +6,7 @@ PImage run_button_img;
 
 // ###################### Tree Manager ##############################
 Tree tree ;
-ArrayList<Tree> arraytree = new ArrayList<Tree>();
+ArrayList<Tree> arraytree;
 
 Tree construcIf(){
   Tree treeif = new Tree("if");
@@ -37,6 +37,7 @@ Tree combineTree(Tree root,Tree child){
 void setup() {
   size(1500,900);
   menu = new Menu();
+  arraytree = new ArrayList<Tree>();
   cat = new Cat(width*4/5,height/3,"image/ScratchCat.png");
   commandBox = new ArrayList<Box>();
   bin_img = loadImage("image/bin.png");
@@ -67,18 +68,6 @@ void mousePressed() {
       }
       Box cB = new Box(x-60,y-30,120,30,b.type,b.command);
       commandBox.add(cB);
-      if(b.command.substring(0,1).equals("n")){
-        arraytree.add(construcFor(0,null));
-      }
-      else if(b.command.substring(0,2).equals("if")){
-        arraytree.add(construcIf());
-      }
-      else if (b.command.substring(0,4).equals("move")){
-        arraytree.add(construcWalk(b.command));
-      }
-      else if(b.command.substring(0,6).equals("rotate")){
-        arraytree.add(construcRotate(b.command));
-      }
     }
   }
 }
@@ -88,8 +77,6 @@ void mouseDragged() {
     int transitionY = mouseY - pmouseY;
     Box cB = commandBox.get(i);
     if (cB.inBox(mouseX,mouseY)) {
-      //cB.x += transitionX;
-      //cB.y += transitionY;
       for(int j=0;j<commandBox.size();j++){
         Box belowBox = commandBox.get(j);
         if(cB.x == belowBox.x && cB.y<belowBox.y && belowBox.y<cB.y+(cB.h*(commandBox.size()))){
@@ -115,7 +102,22 @@ void mouseReleased() {
     }
   }
   else if(mouseX>1050 && mouseX<1125 && mouseY<75 && mouseY>0){
-    if(arraytree.size()>0){
+    
+    if(commandBox.size()>0){
+      for(Box b : commandBox){
+        if(b.command.substring(0,1).equals("n")){
+          arraytree.add(construcFor(0,null));
+        }
+        else if(b.command.substring(0,2).equals("if")){
+          arraytree.add(construcIf());
+        }
+        else if (b.command.substring(0,4).equals("move")){
+          arraytree.add(construcWalk(b.command));
+        }
+        else if(b.command.substring(0,6).equals("rotate")){
+          arraytree.add(construcRotate(b.command));
+        }
+      }
       tree = arraytree.get(0);
       for(int i=0;commandBox.size()>i;i++){
         Box belowbox = commandBox.get(i);
@@ -128,6 +130,7 @@ void mouseReleased() {
         }
       }
       cat.actualize(tree.getCommandlist());
+      arraytree.clear();
       println("run");
     }
   }
