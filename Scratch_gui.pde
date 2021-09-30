@@ -33,7 +33,40 @@ Tree combineTree(Tree root,Tree child){
   return newtree;
 }
 // ##############################################################
-
+private ArrayList<Box> getLinkedbox(Box topbox){
+  ArrayList<Box> linkedbox = new ArrayList<Box>();
+  linkedbox.add(topbox);
+  for(Box box : commandBox){
+    if(box.x == topbox.x && box.y == topbox.y+topbox.h){
+      linkedbox.addAll(getLinkedbox(box));
+    }
+  }
+  return linkedbox;
+}
+private ArrayList<Integer> getIndexOfLinkedbox(int index_topbox){
+  ArrayList<Integer> index_linkedbox = new ArrayList<Integer>();
+  index_linkedbox.add(index_topbox);
+  for(int i=0 ;i<commandBox.size();i++){
+    Box box = commandBox.get(i);
+    Box topbox = commandBox.get(index_topbox);
+    if(box.x == topbox.x && box.y == topbox.y+topbox.h){
+      index_linkedbox.addAll(getIndexOfLinkedbox(i));
+    }
+  }
+  return index_linkedbox;
+}
+private int getIndexToperbox(){
+  int index_topperbox = 0;
+  for(int i=0;i<commandBox.size();i++){
+    Box topperbox = commandBox.get(index_topperbox);
+    Box tempbox = commandBox.get(i);
+    if(tempbox.y<topperbox.y){
+      index_topperbox = i;
+    }
+  }
+  return index_topperbox;
+}
+// ###############################################################
 void setup() {
   size(1500,900);
   menu = new Menu();
@@ -70,16 +103,6 @@ void mousePressed() {
       commandBox.add(cB);
     }
   }
-}
-private ArrayList<Box> getLinkedbox(Box topbox){
-  ArrayList<Box> linkedbox = new ArrayList<Box>();
-  linkedbox.add(topbox);
-  for(Box box : commandBox){
-    if(box.x == topbox.x && box.y == topbox.y+topbox.h){
-      linkedbox.addAll(getLinkedbox(box));
-    }
-  }
-  return linkedbox;
 }
 
 void mouseDragged() {
@@ -123,16 +146,11 @@ void mouseReleased() {
           arraytree.add(construcRotate(b.command));
         }
       }
-      tree = arraytree.get(0);
-      for(int i=0;commandBox.size()>i;i++){
-        Box belowbox = commandBox.get(i);
-        for(int j=0;commandBox.size()>j;j++){
-          Box topbox = commandBox.get(j);
-          if(belowbox.isBelow(topbox)){
-            //println(topbox.command, "=>", belowbox.command);
-            tree.addchild(arraytree.get(i));
-          }
-        }
+      
+      tree = arraytree.get(getIndexToperbox());
+      ArrayList<Integer> index_linkedbox = getIndexOfLinkedbox(getIndexToperbox());
+      for(int i=1;i<index_linkedbox.size();i++){
+        tree.addchild(arraytree.get(index_linkedbox.get(i)));
       }
       cat.actualize(tree.getCommandlist());
       arraytree.clear();
@@ -140,14 +158,16 @@ void mouseReleased() {
     }
   }
   else{
-    for(int i=0;commandBox.size()>i;i++){
-      Box belowbox = commandBox.get(i);
-      if(belowbox.inBox(mouseX,mouseY)){
-        for(int j=0;commandBox.size()>j;j++){
-          Box topbox = commandBox.get(j);
-          if(belowbox.isBelow(topbox)){
-            belowbox.x=topbox.x;
-            belowbox.y=topbox.y+topbox.h;
+    for(Box clickedbox : commandBox){
+      if(clickedbox.inBox(mouseX,mouseY)){
+        for(Box topbox : commandBox){
+          if(clickedbox.isBelow(topbox)){
+            ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
+            for(int i=0;i<linkedboxes.size();i++){
+              Box belowBox = linkedboxes.get(i);
+              belowBox.x = topbox.x;
+              belowBox.y = topbox.y + topbox.h*(i+1);
+            }
           }
         }
       }
