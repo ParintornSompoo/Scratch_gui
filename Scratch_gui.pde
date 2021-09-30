@@ -71,23 +71,29 @@ void mousePressed() {
     }
   }
 }
+private ArrayList<Box> getLinkedbox(Box topbox){
+  ArrayList<Box> linkedbox = new ArrayList<Box>();
+  linkedbox.add(topbox);
+  for(Box box : commandBox){
+    if(box.x == topbox.x && box.y == topbox.y+topbox.h){
+      linkedbox.addAll(getLinkedbox(box));
+    }
+  }
+  return linkedbox;
+}
+
 void mouseDragged() {
   for (int i=0;commandBox.size()>i;i++) {
     int transitionX = mouseX - pmouseX;
     int transitionY = mouseY - pmouseY;
-    Box cB = commandBox.get(i);
-    if (cB.inBox(mouseX,mouseY)) {
-      for(int j=0;j<commandBox.size();j++){
-        Box belowBox = commandBox.get(j);
-        if(cB.x == belowBox.x && cB.y<belowBox.y && belowBox.y<cB.y+(cB.h*(commandBox.size()))){
-          belowBox.x += transitionX;
-          belowBox.y += transitionY;
-        }
+    Box clickedbox = commandBox.get(i);
+    if (clickedbox.inBox(mouseX,mouseY)) {
+      for(Box belowBox : getLinkedbox(clickedbox)){
+        belowBox.x += transitionX;
+        belowBox.y += transitionY;
       }
-      cB.x += transitionX;
-      cB.y += transitionY;
     }
-    cB.checkEdge();
+    clickedbox.checkEdge();
   }
 }
 void mouseReleased() {
