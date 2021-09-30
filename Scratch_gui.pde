@@ -5,7 +5,7 @@ PImage bin_img;
 PImage run_button_img;
 
 // ###################### Tree Manager ##############################
-Tree tree = new Tree("null");
+Tree tree ;
 ArrayList<Tree> arraytree = new ArrayList<Tree>();
 
 Tree construcIf(){
@@ -84,10 +84,21 @@ void mousePressed() {
 }
 void mouseDragged() {
   for (int i=0;commandBox.size()>i;i++) {
+    int transitionX = mouseX - pmouseX;
+    int transitionY = mouseY - pmouseY;
     Box cB = commandBox.get(i);
     if (cB.inBox(mouseX,mouseY)) {
-      cB.x += mouseX - pmouseX;
-      cB.y += mouseY - pmouseY;
+      //cB.x += transitionX;
+      //cB.y += transitionY;
+      for(int j=0;j<commandBox.size();j++){
+        Box belowBox = commandBox.get(j);
+        if(cB.x == belowBox.x && cB.y<belowBox.y && belowBox.y<cB.y+(cB.h*(commandBox.size()))){
+          belowBox.x += transitionX;
+          belowBox.y += transitionY;
+        }
+      }
+      cB.x += transitionX;
+      cB.y += transitionY;
     }
     cB.checkEdge();
   }
@@ -104,8 +115,21 @@ void mouseReleased() {
     }
   }
   else if(mouseX>1050 && mouseX<1125 && mouseY<75 && mouseY>0){
-    cat.actualize(tree.getCommandlist());
-    println("run");
+    if(arraytree.size()>0){
+      tree = arraytree.get(0);
+      for(int i=0;commandBox.size()>i;i++){
+        Box belowbox = commandBox.get(i);
+        for(int j=0;commandBox.size()>j;j++){
+          Box topbox = commandBox.get(j);
+          if(belowbox.isBelow(topbox)){
+            //println(topbox.command, "=>", belowbox.command);
+            tree.addchild(arraytree.get(i));
+          }
+        }
+      }
+      cat.actualize(tree.getCommandlist());
+      println("run");
+    }
   }
   else{
     for(int i=0;commandBox.size()>i;i++){
@@ -114,16 +138,8 @@ void mouseReleased() {
         for(int j=0;commandBox.size()>j;j++){
           Box topbox = commandBox.get(j);
           if(belowbox.isBelow(topbox)){
-            //println(belowbox.command);
             belowbox.x=topbox.x;
             belowbox.y=topbox.y+topbox.h;
-            Tree temp_toptree = arraytree.get(j);
-            temp_toptree.addchild(arraytree.get(i));
-            arraytree.set(j,temp_toptree);
-            tree.addchild(arraytree.get(j));
-            //for(Tree t : arraytree){
-            //println(t.getCommandlist());
-            //}          
           }
         }
       }
