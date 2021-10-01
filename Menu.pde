@@ -2,7 +2,7 @@ class Menu {
   ArrayList<Box> boxes;
   Menu() {
     boxes = new ArrayList<Box>();
-    String[] commandOneLine = {"move right 10","move left 10","move up 10","move down 10","rotate 30 degree"};
+    String[] commandOneLine = {"move right 10","move left 10","move up 10","move down 10","rotate left 30","rotate right 30"};
     for (int i=1;commandOneLine.length>=i;i++) {
       Box b = new Box(10,25+i*40,120,30, "oneLine", commandOneLine[i-1]);
       boxes.add(b);

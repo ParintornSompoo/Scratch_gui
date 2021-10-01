@@ -45,8 +45,11 @@ class Cat{
       else if(command.equals("move down 10")){
         move(0,10);
       }
-      else if(command.equals("rotate 30 degree")){
+      else if(command.equals("rotate left 30")){
         turn(PI/6);
+      }
+      else if(command.equals("rotate right 30")){
+        turn(-PI/6);
       }
     }
   }
