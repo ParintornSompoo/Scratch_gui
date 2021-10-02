@@ -23,9 +23,25 @@ class Box {
   boolean isBelow(Box topbox) {
     float top_x = topbox.x;
     float top_y = topbox.y;
-    if ((x < top_x+0.25*w) && (x > top_x-0.25*w)) {
-      if ((y>top_y+h/2) && (y<top_y+1.5*h)) { 
-        return true;
+    if(topbox.type.equals("oneLine")){
+      if ((x < top_x+0.25*w) && (x > top_x-0.25*w)) {
+        if ((y>top_y+h/2) && (y<top_y+1.5*h)) { 
+          return true;
+        }
+      }
+    }
+    //else if (topbox.type.equals("if-else") || topbox.type.equals("loop")){
+      //if ((x-(w/4) < top_x+0.25*w) && (x-(w/4) > top_x-0.25*w)) {
+      //  if ((y>top_y+h/2) && (y<top_y+1.5*h)) { 
+      //    return true;
+      //  }
+    //  }
+    //}
+    else if (topbox.type.equals("if-else") || topbox.type.equals("loop")){
+      if ((x < top_x+0.25*w) && (x > top_x-0.25*w)) {
+        if ((y>top_y+(topbox.h*(topbox.child+1))+h/2) && (y<top_y+(1.5*h)+h/2+(topbox.h*(topbox.child+1)))) { 
+          return true;
+        }
       }
     }
     return false;

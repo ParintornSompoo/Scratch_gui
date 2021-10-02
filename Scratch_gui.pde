@@ -5,7 +5,7 @@ PImage bin_img;
 PImage run_button_img;
 
 // ###################### Tree Manager ##############################
-Tree tree ;
+
 ArrayList<Tree> arraytree;
 
 Tree construcIf(){
@@ -19,13 +19,9 @@ Tree construcFor(int n, Tree child){
   }
   return treefor;
 }
-Tree construcWalk(String way){
-  Tree treewalk = new Tree(way);
-  return treewalk;
-}
-Tree construcRotate(String side){
-  Tree treeturn = new Tree(side);
-  return treeturn;
+Tree construcCataction(String action){
+  Tree treeaction = new Tree(action);
+  return treeaction;
 }
 Tree combineTree(Tree root,Tree child){
   Tree newtree = root;
@@ -81,13 +77,13 @@ void setup() {
 void draw() {
   background(255);
   menu.display();
+  image(bin_img, 1050, 825,75,75);
   for (int i=0;commandBox.size()>i;i++) {
     Box cB = commandBox.get(i);
     cB.display();
   }
-  cat.display();
-  image(bin_img, 1050, 825,75,75);
   image(run_button_img, 1050, 0,75,75);
+  cat.display();
 }
 void mousePressed() {
   for (int i=0;menu.boxes.size()>i;i++) {
@@ -134,28 +130,24 @@ void mouseReleased() {
     
     if(commandBox.size()>0){
       for(Box b : commandBox){
-        if(b.command.substring(0,1).equals("n")){
+        if(b.type.equals("loop")){
           arraytree.add(construcFor(0,null));
         }
-        else if(b.command.substring(0,2).equals("if")){
+        else if(b.type.equals("if-else")){
           arraytree.add(construcIf());
         }
-        else if (b.command.substring(0,4).equals("move")){
-          arraytree.add(construcWalk(b.command));
-        }
-        else if(b.command.substring(0,6).equals("rotate")){
-          arraytree.add(construcRotate(b.command));
+        else if (b.type.equals("oneLine")){
+          arraytree.add(construcCataction(b.command));
         }
       }
       
-      tree = arraytree.get(getIndexToperbox());
+      Tree tree = new Tree("Root");
       ArrayList<Integer> index_linkedbox = getIndexOfLinkedbox(getIndexToperbox());
-      for(int i=1;i<index_linkedbox.size();i++){
-        tree.addchild(arraytree.get(index_linkedbox.get(i)));
+      for(int i : index_linkedbox){
+        tree.addchild(arraytree.get(i));
       }
       cat.actualize(tree.getCommandlist());
       arraytree.clear();
-      println("run");
     }
   }
   else{
@@ -163,11 +155,37 @@ void mouseReleased() {
       if(clickedbox.inBox(mouseX,mouseY)){
         for(Box topbox : commandBox){
           if(clickedbox.isBelow(topbox)){
-            ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
-            for(int i=0;i<linkedboxes.size();i++){
-              Box belowBox = linkedboxes.get(i);
-              belowBox.x = topbox.x;
-              belowBox.y = topbox.y + topbox.h*(i+1);
+            if(topbox.type.equals("oneLine")){
+              ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
+              for(int i=0;i<linkedboxes.size();i++){
+                Box belowBox = linkedboxes.get(i);
+                belowBox.x = topbox.x;
+                belowBox.y = topbox.y + topbox.h*(i+1);
+              }
+            }
+            else if (topbox.type.equals("if-else") || topbox.type.equals("loop")){
+              ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
+              for(int i=0;i<linkedboxes.size();i++){
+                Box belowBox = linkedboxes.get(i);
+                //belowBox.x = topbox.x+topbox.w/4;
+                //belowBox.y = topbox.y + topbox.h*(i+1);
+                belowBox.x = topbox.x;
+                belowBox.y = topbox.y + (topbox.h*(topbox.child+1))+ topbox.h*(i+1);
+              }
+            }
+          }
+          else if(topbox.type.equals("if-else") || topbox.type.equals("loop")){
+            if((clickedbox.x-(clickedbox.w/4) < topbox.x+0.25*clickedbox.w) && (clickedbox.x-(clickedbox.w/4) > topbox.x-0.25*clickedbox.w)){
+              if((clickedbox.y>topbox.y+clickedbox.h/2) && (clickedbox.y<topbox.y+1.5*clickedbox.h)){
+                ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
+                for(int i=0;i<linkedboxes.size();i++){
+                  Box belowBox = linkedboxes.get(i);
+                  belowBox.x = topbox.x+topbox.w/4;
+                  belowBox.y = topbox.y + topbox.h*(i+1);
+                  topbox.child = i+1;
+                }
+                //topbox.child = linkedboxes.size();
+              }
             }
           }
         }
@@ -182,7 +200,7 @@ void mouseWheel(MouseEvent event) {
   float e = event.getCount();
   for (Box cB:commandBox) {
     if (cB.inBox(mouseX,mouseY)) {
-      if (cB.command.substring(0,2).equals("if")) {
+      if (cB.type.equals("if-else")) {
         if (cB.child >=0) {
           cB.child += e;
         }
@@ -190,7 +208,7 @@ void mouseWheel(MouseEvent event) {
           cB.child = 0;
         }
       }
-      if (cB.command.substring(0,2).equals("n=")) {
+      if (cB.type.equals("loop")) {
         if (cB.child >=0) {
           cB.child += e;
         }
