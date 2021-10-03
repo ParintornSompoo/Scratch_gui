@@ -200,20 +200,13 @@ void mouseWheel(MouseEvent event) {
   float e = event.getCount();
   for (Box cB:commandBox) {
     if (cB.inBox(mouseX,mouseY)) {
-      if (cB.type.equals("if-else")) {
-        if (cB.child >=0) {
-          cB.child += e;
-        }
-        if (cB.child < 0) {
-          cB.child = 0;
-        }
-      }
       if (cB.type.equals("loop")) {
-        if (cB.child >=0) {
-          cB.child += e;
+        int n = Integer.parseInt(cB.command.substring(2));
+        if ((n-e) >=0) {
+          cB.command = "n=" + (int)(n-e);
         }
-        if (cB.child < 0) {
-          cB.child = 0;
+        if ((n-e) < 1) {
+          cB.command = "n=1";
         }
       }
     }

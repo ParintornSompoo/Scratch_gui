@@ -12,7 +12,7 @@ class Menu {
       Box b = new Box(10,25+height/3+i*40,120,30, "if-else", commandIfElse[i-1]);
       boxes.add(b);
     }
-    String[] commandLoop = {"n=2","n=3","n=5","n=7"};
+    String[] commandLoop = {"n=1"};
     for (int i=1;commandLoop.length>=i;i++) {
       Box b = new Box(10,25+height*2/3+i*40,120,30, "loop", commandLoop[i-1]);
       boxes.add(b);
