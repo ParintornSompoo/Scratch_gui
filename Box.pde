@@ -2,6 +2,7 @@ class Box {
   float x,y,w,h;
   String type,command;
   int child;
+  Textbox textBox;
   Box(float x_, float y_, float w_, float h_, String type_,String command_) {
     x = x_;
     y = y_;
@@ -10,6 +11,16 @@ class Box {
     type = type_;
     command = command_;
     child = 0;
+    if (type_.equals("oneLine")) {
+      textBox = new Textbox(x_+100,y_+2.5,20,25);
+    }
+    else if (type_.equals("if-else")) {
+      textBox = new Textbox(x_+100,y_+2.5,20,25);
+    }
+    else if (type_.equals("loop")) {
+      textBox = new Textbox(x_+(w_/2),y_+2.5,30,25);
+    }
+    textBox.text = "1";
   }
   boolean inBox(float x_, float y_) {
     if ((x_ >= x) && ((x+w) >= x_)) {
@@ -83,8 +94,9 @@ class Box {
     rect(0,0,w,h);
     fill(0);
     textSize(14);
-    textAlign(CENTER);
-    text(command,w/2,h/1.5);
+    textAlign(LEFT);
+    text(command,5,h/1.5);
     popMatrix();
+    textBox.display();
   }
 }

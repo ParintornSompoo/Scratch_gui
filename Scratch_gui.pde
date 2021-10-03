@@ -106,6 +106,9 @@ void mousePressed() {
       linkedBox = getLinkedbox(clickedbox);
     }
   }
+  for (Box cB:commandBox) {
+    cB.textBox.PRESSED(mouseX, mouseY);
+  }
 }
 
 void mouseDragged() {
@@ -115,6 +118,8 @@ void mouseDragged() {
     for(Box belowBox : linkedBox){
       belowBox.x += transitionX;
       belowBox.y += transitionY;
+      belowBox.textBox.x += transitionX;
+      belowBox.textBox.y += transitionY;
       belowBox.checkEdge();
     }
   }
@@ -202,7 +207,7 @@ void mouseWheel(MouseEvent event) {
     if (cB.inBox(mouseX,mouseY)) {
       if (cB.type.equals("loop")) {
         int n = Integer.parseInt(cB.command.substring(2));
-        if ((n-e) >=0) {
+        if ((n-e) >=1) {
           cB.command = "n=" + (int)(n-e);
         }
         if ((n-e) < 1) {
@@ -210,5 +215,10 @@ void mouseWheel(MouseEvent event) {
         }
       }
     }
+  }
+}
+void keyPressed() {
+  for (Box cB:commandBox) {
+    cB.textBox.KEYPRESSED(key, (int)keyCode);
   }
 }
