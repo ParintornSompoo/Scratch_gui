@@ -57,19 +57,25 @@ class Box {
     }
     return false;
   }
-  void checkEdge() {
+  boolean[] checkEdge() {
+    boolean[] Return = {false,false};
     if (x <= width/10) {
       x = width/10;
+      Return[0] = true;
     }
     if (x+w >= width*3/4) {
       x = width*3/4 - w;
+      Return[0] = true;
     }
-    if (y < 0) {
+    if (y <= 0) {
       y = 0;
+      Return[1] = true;
     }
-    if (y+h > height) {
+    if (y+h >= height) {
       y = height - h;
+      Return[1] = true;
     }
+    return Return;
   }
   void display() {
     pushMatrix();

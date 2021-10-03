@@ -118,9 +118,12 @@ void mouseDragged() {
     for(Box belowBox : linkedBox){
       belowBox.x += transitionX;
       belowBox.y += transitionY;
-      belowBox.textBox.x += transitionX;
-      belowBox.textBox.y += transitionY;
-      belowBox.checkEdge();
+      if (!belowBox.checkEdge()[0]) {
+        belowBox.textBox.x += transitionX;
+      }
+      if (!belowBox.checkEdge()[1]) {
+        belowBox.textBox.y += transitionY;
+      }
     }
   }
 }
