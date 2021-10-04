@@ -41,18 +41,19 @@ class Box {
         }
       }
     }
-    //else if (topbox.type.equals("if-else") || topbox.type.equals("loop")){
-      //if ((x-(w/4) < top_x+0.25*w) && (x-(w/4) > top_x-0.25*w)) {
-      //  if ((y>top_y+h/2) && (y<top_y+1.5*h)) { 
-      //    return true;
-      //  }
-    //  }
-    //}
     else if (topbox.type.equals("if-else") || topbox.type.equals("loop")){
       if ((x < top_x+0.25*w) && (x > top_x-0.25*w)) {
         if ((y>top_y+(topbox.h*(topbox.child+1))+h/2) && (y<top_y+(1.5*h)+h/2+(topbox.h*(topbox.child+1)))) { 
           return true;
         }
+      }
+    }
+    return false;
+  }
+  boolean isIndent(Box topbox){
+    if((x-(w/4) < topbox.x+0.25*w) && (x-(w/4) > topbox.x-0.25*w)){
+      if((y>topbox.y+h/2) && (y<topbox.y+1.5*h)){
+        return true;
       }
     }
     return false;

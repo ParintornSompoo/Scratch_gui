@@ -26,24 +26,23 @@ class Tree
     ArrayList<Node> getchildren(){
       return children;
     }
-    
-    void drawNode(int x,int y){
-      fill(0);
-      //circle(x, y, 50);
-      textSize(20);
-      text(command, x, y);
-      fill(255);
-    }
   }
   // -------------------------------------------
   Node root;
   
   Tree(String command){
     if(command.equals("if")){
-      root = construcIftree();
+      Node ifnode = new Node("if");
+      Node conditionchild = new Node("false");
+      Node truechild = new Node("null");
+      Node falsechild = new Node("null");
+      ifnode.addchild(conditionchild);
+      ifnode.addchild(truechild);
+      ifnode.addchild(falsechild);
+      root = ifnode;
     }
     else if(command.equals("for")){
-      root = construcFortree();
+      root = new Node("for");
     }
     else{
       root = new Node(command);
@@ -51,49 +50,25 @@ class Tree
     
   }
   // -------------------------------------------------------
-  Node construcIftree(){
-    Node node = new Node("if");
-    Node truechild = new Node("null");
-    Node falsechild = new Node("null");
-    node.addchild(truechild);
-    node.addchild(falsechild);
-    return node;
-  }
-  
-  Node construcFortree(){
-    Node node = new Node("for");
-    return node;
-  }
-  // -------------------------------------------------------
   void changeLastChild(Tree trees){
     Node child = trees.getRoot();
     root.changechild(child);
   }
-  void changeFirstChild(Tree trees){
+  void chandeConditionChild(Tree trees){
     Node child = trees.getRoot();
     root.changeAnychild(child,0);
   }
-  void changeSecoundChild(Tree trees){
+  void addIfstatement(Tree trees){
     Node child = trees.getRoot();
     root.changeAnychild(child,1);
   }
-  void addIfstatement(Tree trees,String condition){
-    Tree treeofif = new Tree(condition);
-    treeofif.addchild(trees);
-    changeFirstChild(treeofif);
-  }
   void addElsestatement(Tree trees){
-    changeSecoundChild(trees);
+    Node child = trees.getRoot();
+    root.changeAnychild(child,2);
   }
   void addchild(Tree trees){
     Node child = trees.getRoot();
     root.addchild(child);
-  }
-  Boolean haveAddedChild(){
-    if (root.getchildren().size() != 0){
-      return true;
-    }
-    return false;
   }
   Node getRoot(){
     return root;
@@ -125,14 +100,5 @@ class Tree
       }
     }
     return commands;
-  }
-  // -------------------------------------------------------
-  void draw(int w, int h,Node node){
-    node.drawNode(w/2,h/10);
-    ArrayList<Node> children = node.getchildren();
-    for(int i=0; i<children.size(); i++){
-      line(w/2,h/10,((w/children.size())*(i+1))/2,(h+1000)/10);
-      draw((w/children.size())*(i+1),h+1000,children.get(i));
-    }
   }
 }

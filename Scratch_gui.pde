@@ -34,7 +34,10 @@ private ArrayList<Box> getLinkedbox(Box topbox){
   ArrayList<Box> linkedbox = new ArrayList<Box>();
   linkedbox.add(topbox);
   for(Box box : commandBox){
-    if(box.x == topbox.x && box.y == topbox.y+topbox.h){
+    if((topbox.type.equals("if-else") || topbox.type.equals("loop"))&& box.isIndent(topbox)){
+      linkedbox.addAll(getLinkedbox(box));
+    }
+    if(box.isBelow(topbox)){
       linkedbox.addAll(getLinkedbox(box));
     }
   }
@@ -175,25 +178,20 @@ void mouseReleased() {
               ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
               for(int i=0;i<linkedboxes.size();i++){
                 Box belowBox = linkedboxes.get(i);
-                //belowBox.x = topbox.x+topbox.w/4;
-                //belowBox.y = topbox.y + topbox.h*(i+1);
                 belowBox.x = topbox.x;
                 belowBox.y = topbox.y + (topbox.h*(topbox.child+1))+ topbox.h*(i+1);
               }
             }
           }
           else if(topbox.type.equals("if-else") || topbox.type.equals("loop")){
-            if((clickedbox.x-(clickedbox.w/4) < topbox.x+0.25*clickedbox.w) && (clickedbox.x-(clickedbox.w/4) > topbox.x-0.25*clickedbox.w)){
-              if((clickedbox.y>topbox.y+clickedbox.h/2) && (clickedbox.y<topbox.y+1.5*clickedbox.h)){
+            if(clickedbox.isIndent(topbox)){
                 ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
                 for(int i=0;i<linkedboxes.size();i++){
                   Box belowBox = linkedboxes.get(i);
                   belowBox.x = topbox.x+topbox.w/4;
                   belowBox.y = topbox.y + topbox.h*(i+1);
-                  topbox.child = i+1;
                 }
-                //topbox.child = linkedboxes.size();
-              }
+                topbox.child = linkedboxes.size();
             }
           }
         }
