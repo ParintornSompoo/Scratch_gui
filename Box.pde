@@ -12,13 +12,13 @@ class Box {
     command = command_;
     child = 0;
     if (type_.equals("oneLine")) {
-      textBox = new Textbox(x_+100,y_+2.5,20,25);
+      textBox = new Textbox(100,2.5,20,25);
     }
     else if (type_.equals("if-else")) {
-      textBox = new Textbox(x_+100,y_+2.5,20,25);
+      textBox = new Textbox(100,2.5,20,25);
     }
     else if (type_.equals("loop")) {
-      textBox = new Textbox(x_+(w_/2),y_+2.5,30,25);
+      textBox = new Textbox(w_/2,2.5,30,25);
     }
     textBox.text = "1";
   }
@@ -102,7 +102,7 @@ class Box {
     textSize(14);
     textAlign(LEFT);
     text(command,5,h/1.5);
-    popMatrix();
     textBox.display();
+    popMatrix();
   }
 }
