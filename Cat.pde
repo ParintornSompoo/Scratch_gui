@@ -30,27 +30,24 @@ class Cat{
       y = 50;
     }
   }
-  void actualize(ArrayList<String> commandlist){
-    println(commandlist);
-    for(String command : commandlist){
-      if(command.equals("move right 10")){
-        move(10,0);
-      }
-      else if(command.equals("move left 10")){
-        move(-10,0);
-      }
-      else if(command.equals("move up 10")){
-        move(0,-10);
-      }
-      else if(command.equals("move down 10")){
-        move(0,10);
-      }
-      else if(command.equals("rotate left 30")){
-        turn(PI/6);
-      }
-      else if(command.equals("rotate right 30")){
-        turn(-PI/6);
-      }
+  void actualize(String command){
+    if(command.equals("move right 10")){
+      move(10,0);
+    }
+    else if(command.equals("move left 10")){
+      move(-10,0);
+    }
+    else if(command.equals("move up 10")){
+      move(0,-10);
+    }
+    else if(command.equals("move down 10")){
+      move(0,10);
+    }
+    else if(command.equals("rotate left 30")){
+      turn(PI/6);
+    }
+    else if(command.equals("rotate right 30")){
+      turn(-PI/6);
     }
   }
   void display() {

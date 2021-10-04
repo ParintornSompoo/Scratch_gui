@@ -134,7 +134,9 @@ void mouseReleased() {
       for(int i : index_linkedbox){
         tree.addchild(arraytree.get(i));
       }
-      cat.actualize(tree.getCommandlist());
+      for (String command:tree.getCommandlist()) {
+        cat.actualize(command);
+      }
       arraytree.clear();
     }
   }
