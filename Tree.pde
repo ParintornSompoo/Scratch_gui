@@ -55,8 +55,8 @@ class Tree
     root.changechild(child);
   }
   void chandeConditionChild(Tree trees){
-    Node child = trees.getRoot();
-    root.changeAnychild(child,0);
+    Node condition = trees.getRoot();
+    root.changeAnychild(condition,0);
   }
   void addIfstatement(Tree trees){
     Node child = trees.getRoot();
@@ -69,6 +69,12 @@ class Tree
   void addchild(Tree trees){
     Node child = trees.getRoot();
     root.addchild(child);
+  }
+  void addLoopchild(Tree trees,int n){
+    Node child = trees.getRoot();
+    for(int i =0;i<n;i++){
+      root.addchild(child);
+    }
   }
   Node getRoot(){
     return root;

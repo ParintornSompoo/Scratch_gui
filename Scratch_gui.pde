@@ -3,32 +3,7 @@ Cat cat;
 ArrayList<Box> commandBox;
 PImage bin_img;
 PImage run_button_img;
-
-// ###################### Tree Manager ##############################
-
-ArrayList<Tree> arraytree;
-
-Tree construcIf(){
-  Tree treeif = new Tree("if");
-  return treeif;
-}
-Tree construcFor(int n, Tree child){
-  Tree treefor = new Tree("for");
-  for(int i=0; i<n; i++){
-    treefor.addchild(child);
-  }
-  return treefor;
-}
-Tree construcCataction(String action){
-  Tree treeaction = new Tree(action);
-  return treeaction;
-}
-Tree combineTree(Tree root,Tree child){
-  Tree newtree = root;
-  newtree.addchild(child);
-  return newtree;
-}
-// ##############################################################
+// ###################### Box Manager ##############################
 ArrayList<Box> linkedBox;
 private ArrayList<Box> getLinkedbox(Box topbox){
   ArrayList<Box> linkedbox = new ArrayList<Box>();
@@ -71,7 +46,6 @@ void setup() {
   size(1500,900);
   frameRate(60);
   menu = new Menu();
-  arraytree = new ArrayList<Tree>();
   cat = new Cat(width*4/5,height/3,"image/ScratchCat.png");
   commandBox = new ArrayList<Box>();
   bin_img = loadImage("image/bin.png");
@@ -135,15 +109,23 @@ void mouseReleased() {
   else if(mouseX>1050 && mouseX<1125 && mouseY<75 && mouseY>0){
     
     if(commandBox.size()>0){
+      ArrayList<Tree> arraytree = new ArrayList<Tree>();
       for(Box b : commandBox){
         if(b.type.equals("loop")){
-          arraytree.add(construcFor(0,null));
+          arraytree.add(new Tree("for"));
         }
         else if(b.type.equals("if-else")){
-          arraytree.add(construcIf());
+          Tree addedtree = new Tree("if");
+          if(b.command.contains("true")){
+            addedtree.chandeConditionChild(new Tree("true"));
+          }
+          else if(b.command.contains("false")){
+            addedtree.chandeConditionChild(new Tree("false"));
+          }
+          arraytree.add(addedtree);
         }
         else if (b.type.equals("oneLine")){
-          arraytree.add(construcCataction(b.command));
+          arraytree.add(new Tree(b.command));
         }
       }
       
@@ -157,37 +139,50 @@ void mouseReleased() {
     }
   }
   else{
-    for(Box clickedbox : commandBox){
-      if(clickedbox.inBox(mouseX,mouseY)){
+    for(Box box : commandBox){
+      if(box.inBox(mouseX,mouseY)){
+        Box clickedbox = box;
+        ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
         for(Box topbox : commandBox){
           if(clickedbox.isBelow(topbox)){
-            if(topbox.type.equals("oneLine")){
-              ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
-              for(int i=0;i<linkedboxes.size();i++){
-                Box belowBox = linkedboxes.get(i);
-                belowBox.x = topbox.x;
+            for(int i=0;i<linkedboxes.size();i++){
+              Box belowBox = linkedboxes.get(i);
+              belowBox.x = topbox.x;
+              if(topbox.type.equals("oneLine")){
                 belowBox.y = topbox.y + topbox.h*(i+1);
               }
-            }
-            else if (topbox.type.equals("if-else") || topbox.type.equals("loop")){
-              ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
-              for(int i=0;i<linkedboxes.size();i++){
-                Box belowBox = linkedboxes.get(i);
-                belowBox.x = topbox.x;
+              else if (topbox.type.equals("if-else") || topbox.type.equals("loop")){
                 belowBox.y = topbox.y + (topbox.h*(topbox.child+1))+ topbox.h*(i+1);
               }
             }
           }
-          else if(topbox.type.equals("if-else") || topbox.type.equals("loop")){
-            if(clickedbox.isIndent(topbox)){
-                ArrayList<Box> linkedboxes = getLinkedbox(clickedbox);
-                for(int i=0;i<linkedboxes.size();i++){
-                  Box belowBox = linkedboxes.get(i);
-                  belowBox.x = topbox.x+topbox.w/4;
-                  belowBox.y = topbox.y + topbox.h*(i+1);
-                }
-                topbox.child = linkedboxes.size();
+          else if(clickedbox.isIndent(topbox)&& (topbox.type.equals("if-else") || topbox.type.equals("loop"))){
+            for(int i=0;i<linkedboxes.size();i++){
+              Box belowBox = linkedboxes.get(i);
+              belowBox.x = topbox.x+topbox.w/4;
+              belowBox.y = topbox.y + topbox.h*(i+1);
             }
+          }
+        }
+      }
+      if(box.type.equals("if-else") || box.type.equals("loop")){
+        for(Box ibox : commandBox){
+          if(ibox.isIndent(box)){
+            ArrayList<Box> linkedbox = getLinkedbox(ibox);
+            int size = 0;
+            for(Box lbox : linkedbox){
+              if(lbox.type.equals("oneLine")){
+                size++;
+              }
+              else if(lbox.type.equals("if-else") || lbox.type.equals("loop")){
+                size += 2;
+              }
+            }
+            box.child = size;
+            break;
+          }
+          else{
+            box.child = 0;
           }
         }
       }
