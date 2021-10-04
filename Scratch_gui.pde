@@ -110,7 +110,7 @@ void mousePressed() {
     }
   }
   for (Box cB:commandBox) {
-    cB.textBox.PRESSED(mouseX, mouseY);
+    cB.textBox.PRESSED(mouseX - cB.x,mouseY - cB.y);
   }
 }
 
@@ -121,12 +121,7 @@ void mouseDragged() {
     for(Box belowBox : linkedBox){
       belowBox.x += transitionX;
       belowBox.y += transitionY;
-      if (!belowBox.checkEdge()[0]) {
-        belowBox.textBox.x += transitionX;
-      }
-      if (!belowBox.checkEdge()[1]) {
-        belowBox.textBox.y += transitionY;
-      }
+      belowBox.checkEdge();
     }
   }
 }

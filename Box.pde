@@ -12,13 +12,13 @@ class Box {
     command = command_;
     child = 0;
     if (type_.equals("oneLine")) {
-      textBox = new Textbox(x_+100,y_+2.5,20,25);
+      textBox = new Textbox(100,2.5,20,25);
     }
     else if (type_.equals("if-else")) {
-      textBox = new Textbox(x_+100,y_+2.5,20,25);
+      textBox = new Textbox(100,2.5,20,25);
     }
     else if (type_.equals("loop")) {
-      textBox = new Textbox(x_+(w_/2),y_+2.5,30,25);
+      textBox = new Textbox(w_/2,2.5,30,25);
     }
     textBox.text = "1";
   }
@@ -58,25 +58,20 @@ class Box {
     }
     return false;
   }
-  boolean[] checkEdge() {
-    boolean[] Return = {false,false};
+
+  void checkEdge() {
     if (x <= width/10) {
       x = width/10;
-      Return[0] = true;
     }
     if (x+w >= width*3/4) {
       x = width*3/4 - w;
-      Return[0] = true;
     }
     if (y <= 0) {
       y = 0;
-      Return[1] = true;
     }
     if (y+h >= height) {
       y = height - h;
-      Return[1] = true;
     }
-    return Return;
   }
   void display() {
     pushMatrix();
@@ -103,7 +98,7 @@ class Box {
     textSize(14);
     textAlign(LEFT);
     text(command,5,h/1.5);
-    popMatrix();
     textBox.display();
+    popMatrix();
   }
 }

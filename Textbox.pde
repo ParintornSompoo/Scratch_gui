@@ -24,14 +24,11 @@ class Textbox {
     }
     strokeWeight(1);
     stroke(Border);
-    pushMatrix();
-    translate(x,y);
-    rect(0, 0, w, h);
+    rect(x, y, w, h);
     fill(Foreground);
     textSize(14);
-    textAlign(CENTER);
-    text(text,w/2,h/1.5);
-    popMatrix();
+    textAlign(LEFT);
+    text(text,x+5,h/1.2);
   }
   boolean KEYPRESSED(char KEY, int KEYCODE) {
     if (selected) {
@@ -65,7 +62,7 @@ class Textbox {
       text = text.substring(0,text.length() - 1);
     }
   }
-  boolean inBox(int x_,int y_) {
+  boolean inBox(float x_,float y_) {
     if ((x_ >= x) && ((x+w) >= x_)) {
       if ((y_ >= y) && ((y+h) >= y_)) {
         return true;
@@ -73,11 +70,11 @@ class Textbox {
     }
     return false;
   }
-  void PRESSED(int x_, int y_) {
-      if (inBox(x_, y_)) {
-         selected = true;
-      } else {
-         selected = false;
-      }
-   }
+  void PRESSED(float x_, float y_) {
+    if (inBox(x_, y_)) {
+       selected = true;
+    } else {
+       selected = false;
+    }
+  }
 }
