@@ -118,33 +118,36 @@ class Tree
     }
     return false;
   }
-  ArrayList<String> getCommandlist(){
+  ArrayList<Box> getCommandlist(){
     return travers(root);
   }
-  private ArrayList<String> travers (Node root){
-    ArrayList<String> commands = new ArrayList<String>();
-    commands.add(root.command);
+  private ArrayList<Box> travers (Node root){
+    ArrayList<Box> actionlist = new ArrayList<Box>();
     ArrayList<Node> children = root.getchildren();
-    for(int i=0; i<children.size(); i++){
-      ArrayList<String> childcommandlist = travers(children.get(i));
-      for(int j=0; j<childcommandlist.size();j++){
-        String childcommand = childcommandlist.get(j);
-        if(root.command.equals("if-else")){
-          if(childcommand.equals("true")){
-            i++;
-            continue;
-          }
-          else if(childcommand.equals("false")){
-            break;
-          }
-        }
-        else if(childcommand.equals("if-else") || childcommand.equals("loop") || childcommand.equals("null")){
-          continue;
-        }
-        commands.add(childcommand);
+    Box rootbox = root.box;
+    String roottype = rootbox.type;
+    if(roottype.equals("oneLine")){
+      actionlist.add(rootbox);
+      if(children.size()>0){
+        actionlist.addAll(travers(children.get(children.size()-1)));
       }
     }
-    return commands;
+    else if(roottype.equals("if-else")){
+      if(children.size()>=3){
+        if(children.get(0) != null){
+          if("true".equals(children.get(0).box.command) && children.get(1) != null){
+            actionlist.addAll(travers(children.get(1)));
+          }
+          else if("false".equals(children.get(0).box.command) && children.get(2) != null){
+            actionlist.addAll(travers(children.get(2)));
+          }
+        }
+        if(children.size()>3){
+          actionlist.addAll(travers(children.get(children.size()-1)));
+        }
+      }
+    }
+    return actionlist;
   }
   private void recursTree(Node n,String mode){
     if(n.box != null){

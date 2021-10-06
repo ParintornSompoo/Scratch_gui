@@ -74,6 +74,11 @@ void mouseReleased() {
   }
   else if(mouseX>1050 && mouseX<1125 && mouseY<75 && mouseY>0){
     // TODO actualize cat 
+    if(arraytree.size()>0){
+      for(Box box : arraytree.get(0).getCommandlist()){
+        cat.actualize(box);
+      }
+    }
   }
   else{
     if(clickedTree!=null){
