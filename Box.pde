@@ -13,14 +13,36 @@ class Box {
     child = 0;
     if (type_.equals("oneLine")) {
       textBox = new Textbox(100,2.5,20,25);
+      textBox.text = "1";
     }
     else if (type_.equals("if-else")) {
-      textBox = new Textbox(100,2.5,20,25);
+      textBox = new Textbox(100,2.5,0,0);
     }
     else if (type_.equals("loop")) {
       textBox = new Textbox(w_/2,2.5,30,25);
+      textBox.text = "1";
     }
-    textBox.text = "1";
+    
+  }
+  void drag(){
+  int trans_x = mouseX - pmouseX;
+  int trans_y = mouseY - pmouseY;
+    x += trans_x;
+    y += trans_y;
+  }
+  void connectBelow(Box topbox){
+    float posy = topbox.y+topbox.h;
+    if(topbox.type.equals("if-else") || topbox.type.equals("loop")){
+      posy += topbox.h*(topbox.child+1);
+    }
+    x = topbox.x;
+    y = posy;
+  }
+  void connectIndent(Box topbox){
+    float posx = topbox.x+topbox.w/4;
+    float posy = topbox.y+topbox.h;
+    x = posx;
+    y = posy;
   }
   boolean inBox(float x_, float y_) {
     if ((x_ >= x) && ((x+w) >= x_)) {
