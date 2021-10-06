@@ -6,14 +6,16 @@ class Textbox {
   public color Border = color(30, 30, 30);
   
   float x,y,w,h;
+  int lim;
   private boolean selected = false;
   String text;
-  Textbox(float x_, float y_, float w_, float h_) {
+  Textbox(float x_, float y_, float w_, float h_, int lim_) {
     x = x_;
     y = y_;
     w = w_;
     h = h_;
     text = "";
+    lim = lim_;
   }
   void display() {
     if (selected) {
@@ -48,7 +50,9 @@ class Textbox {
         boolean isKeySmallLetter = (KEY >= 'a' && KEY <= 'z');
         boolean isKeyNumber = (KEY >= '0' && KEY <= '9');
         if (isKeyCapitalLetter || isKeySmallLetter || isKeyNumber) {
-          addText(KEY);
+          if (text.length() < lim) {
+            addText(KEY);
+          }
         }
       }
     }

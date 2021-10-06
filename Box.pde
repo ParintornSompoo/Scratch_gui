@@ -12,14 +12,14 @@ class Box {
     command = command_;
     child = 0;
     if (type_.equals("oneLine")) {
-      textBox = new Textbox(100,2.5,20,25);
+      textBox = new Textbox(82,2.5,37,25,3);
       textBox.text = "1";
     }
     else if (type_.equals("if-else")) {
-      textBox = new Textbox(100,2.5,0,0);
+      textBox = new Textbox(100,2.5,0,0,0);
     }
     else if (type_.equals("loop")) {
-      textBox = new Textbox(w_/2,2.5,30,25);
+      textBox = new Textbox(40,2.5,37,25,3);
       textBox.text = "1";
     }
     

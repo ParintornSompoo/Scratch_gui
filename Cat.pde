@@ -30,24 +30,25 @@ class Cat{
       y = 50;
     }
   }
-  void actualize(String command){
-    if(command.equals("move right 10")){
-      move(10,0);
+  void actualize(Box b){
+    int n = Integer.parseInt(b.textBox.text);
+    if(b.command.equals("move right")){
+      move(n,0);
     }
-    else if(command.equals("move left 10")){
-      move(-10,0);
+    else if(b.command.equals("move left")){
+      move(-n,0);
     }
-    else if(command.equals("move up 10")){
-      move(0,-10);
+    else if(b.command.equals("move up")){
+      move(0,-n);
     }
-    else if(command.equals("move down 10")){
-      move(0,10);
+    else if(b.command.equals("move down")){
+      move(0,n);
     }
-    else if(command.equals("rotate left 30")){
-      turn(PI/6);
+    else if(b.command.equals("rotate left")){
+      turn(PI*n/180);
     }
-    else if(command.equals("rotate right 30")){
-      turn(-PI/6);
+    else if(b.command.equals("rotate right")){
+      turn(-PI*n/180);
     }
   }
   void display() {
