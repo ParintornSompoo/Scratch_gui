@@ -67,6 +67,9 @@ class Textbox {
     }
   }
   boolean inBox(float x_,float y_) {
+    if (text.length() == 0) {
+      text = "0";
+    }
     if ((x_ >= x) && ((x+w) >= x_)) {
       if ((y_ >= y) && ((y+h) >= y_)) {
         return true;
