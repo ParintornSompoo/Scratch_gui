@@ -4,26 +4,11 @@ class Tree
   class Node
   {
     ArrayList<Node> children;
-    String command;
     Box box;
     
     Node(Box boxnode){
       children = new ArrayList<Node>();
       box = boxnode;
-      if(box == null){
-        command = "null";
-      }
-      else{
-        if(box.type.equals("oneLine")){
-          command = box.command;
-        }
-        else if(box.type.equals("loop") || box.type.equals("if-else")){
-          command = box.type;
-        }
-        else{
-         command = "null";
-        }
-      }
     }
     
     void addchild(Node child){
@@ -41,6 +26,15 @@ class Tree
     ArrayList<Node> getchildren(){
       return children;
     }
+    Box getBox(){
+      return box;
+    }
+    String getBoxType(){
+      return box.type;
+    }
+    String getBoxCommand(){
+      return box.command;
+    }
   }
   // -------------------------------------------
   Node root;
@@ -57,9 +51,7 @@ class Tree
         root.addchild(falsechild);
       }
       else if(box.type.equals("loop")){
-        Node repeat = new Node(null);
         Node action = new Node(null);
-        root.addchild(repeat);
         root.addchild(action);
       }
     }
@@ -112,7 +104,7 @@ class Tree
       }
     }
     else if(getRootBox().type.equals("loop")){
-      if(children.size()>2){
+      if(children.size()>1){
         return true;
       }
     }
@@ -124,8 +116,8 @@ class Tree
   private ArrayList<Box> travers (Node root){
     ArrayList<Box> actionlist = new ArrayList<Box>();
     ArrayList<Node> children = root.getchildren();
-    Box rootbox = root.box;
-    String roottype = rootbox.type;
+    Box rootbox = root.getBox();
+    String roottype = root.getBoxType();
     if(roottype.equals("oneLine")){
       actionlist.add(rootbox);
       if(children.size()>0){
@@ -134,11 +126,11 @@ class Tree
     }
     else if(roottype.equals("if-else")){
       if(children.size()>=3){
-        if(children.get(0) != null){
-          if("true".equals(children.get(0).box.command) && children.get(1) != null){
+        if(children.get(0).getBox() != null){
+          if("true".equals(children.get(0).getBoxCommand()) && children.get(1).getBox() != null){
             actionlist.addAll(travers(children.get(1)));
           }
-          else if("false".equals(children.get(0).box.command) && children.get(2) != null){
+          else if("false".equals(children.get(0).getBoxCommand()) && children.get(2).getBox() != null){
             actionlist.addAll(travers(children.get(2)));
           }
         }
@@ -150,14 +142,14 @@ class Tree
     return actionlist;
   }
   private void recursTree(Node n,String mode){
-    if(n.box != null){
+    if(n.getBox() != null){
       switch(mode) {
         case "display":
-          n.box.checkEdge();
-          n.box.display();
+          n.getBox().checkEdge();
+          n.getBox().display();
           break;
         case "drag":
-          n.box.drag();
+          n.getBox().drag();
           break;
         default:
       }
@@ -174,11 +166,11 @@ class Tree
     recursTree(root,"drag");
   }
   private Node getChildByPosition(Node n,float posx,float posy){
-    if(n.box!= null){
-      if(n.box.inBox(posx,posy)){
+    if(n.getBox() != null){
+      if(n.getBox().inBox(posx,posy)){
         return n;
       }
-      else if (!n.box.inBox(posx,posy) && n.getchildren().size()>0){
+      else if (!n.getBox().inBox(posx,posy) && n.getchildren().size()>0){
         ArrayList<Node> children = n.getchildren();
         Node renode = children.get(children.size()-1);
         return getChildByPosition(renode,posx,posy);
@@ -187,7 +179,7 @@ class Tree
     return null;
   }
   Boolean isClicked(){
-    if(root.box.inBox(mouseX,mouseY)){
+    if(root.getBox().inBox(mouseX,mouseY)){
       return true;
     }
     return false;
@@ -197,8 +189,8 @@ class Tree
   }
   Boolean containChild(Tree tree){
     Node r = tree.getRoot();
-    float posx = r.box.x;
-    float posy = r.box.y;
+    float posx = r.getBox().x;
+    float posy = r.getBox().y;
     Node n = getChildByPosition(root,posx,posy);
     if(n!= null){
       return true;
@@ -220,17 +212,17 @@ class Tree
   }
   void removechild(Tree tree){
     Node r = tree.getRoot();
-    int posx = (int)r.box.x;
-    int posy = (int)r.box.y;
+    int posx = (int)r.getBox().x;
+    int posy = (int)r.getBox().y;
     Node n = getChildByPosition(root,posx,posy);
     removeNode(root,n);
   }
   void setLinkedPosition(Node r,Node n){
     ArrayList<Node> children = n.getchildren();
     ArrayList<Node> rootchild = r.getchildren();
-    if(n.box!=null){
+    if(n.getBox()!=null){
       if(n.equals(rootchild.get(rootchild.size()-1))){
-        n.box.connectBelow(r.box);
+        n.getBox().connectBelow(r.getBox());
         if(children.size()>0){
           setLinkedPosition(n,children.get(children.size()-1));
           if(children.size()>=3){
@@ -239,7 +231,7 @@ class Tree
         }
       }
       else if(n.equals(rootchild.get(1))){
-        n.box.connectIndent(r.box);
+        n.getBox().connectIndent(r.getBox());
         if(children.size()>0){
           setLinkedPosition(n,children.get(children.size()-1));
           if(children.size()>=3){

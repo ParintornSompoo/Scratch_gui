@@ -15,12 +15,12 @@ class Box {
       textBox = new Textbox(82,2.5,37,25,3);
       textBox.text = "1";
     }
-    else if (type_.equals("if-else")) {
-      textBox = new Textbox(100,2.5,0,0,0);
-    }
     else if (type_.equals("loop")) {
       textBox = new Textbox(40,2.5,37,25,3);
       textBox.text = "1";
+    }
+    else{
+      textBox = new Textbox(0,0,0,0,0);
     }
     
   }
@@ -120,7 +120,9 @@ class Box {
     textSize(14);
     textAlign(LEFT);
     text(command,5,h/1.5);
-    textBox.display();
+    if(type.equals("oneLine") || type.equals("loop")){
+      textBox.display();
+    }
     popMatrix();
   }
 }
