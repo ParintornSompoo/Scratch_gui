@@ -19,7 +19,10 @@ void draw() {
   menu.display();
   image(bin_img, 1050, 825,75,75);
   for(Tree t : arraytree){
-   t.display();
+    t.display();
+  }
+  if(clickedTree != null){
+    clickedTree.display();
   }
   image(run_button_img, 1050, 0,75,75);
   cat.display();
@@ -90,19 +93,19 @@ void mouseReleased() {
         if(clickedTree.getRootBox().isBelow(tree.getRootBox())){
           if(!tree.containChild(clickedTree) && !tree.havechild()){
             tree.addchild(clickedTree);
+            break;
           }
-          break;
         }
         if(tree.getRootBox().type.equals("if-else")){
           if(clickedTree.getRootBox().isIndent(tree.getRootBox())){
             if(!tree.containChild(clickedTree)){
               tree.addIfstatement(clickedTree);
+              break;
             }
-            break;
           }
         }
         else if(tree.getRootBox().type.equals("loop")){
-          break;
+          
         }
       }
     }
