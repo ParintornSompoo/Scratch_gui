@@ -45,14 +45,17 @@ class Cat{
       move(0,n);
     }
     else if(b.command.equals("rotate left")){
-      turn(PI*n/180);
+      turn(radians(n));
     }
     else if(b.command.equals("rotate right")){
-      turn(-PI*n/180);
+      turn(radians(-n));
     }
   }
   void display() {
     drawBox();
+    textSize(28);
+    fill(0, 0,255);
+    text("x="+x+",y="+y,1200,50);
     pushMatrix();
     translate(x,y);
     rotate(-r);
