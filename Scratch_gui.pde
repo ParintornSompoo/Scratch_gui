@@ -57,6 +57,11 @@ void mouseDragged() {
       }
     }
   }
+  if (cat.inCat(mouseX,mouseY)) {
+    cat.x += mouseX - pmouseX;
+    cat.y += mouseY - pmouseY;
+    cat.checkInBox();
+  }
 }
 void mouseReleased() {
 

@@ -16,6 +16,15 @@ class Cat{
   void turn(float r_) {
     r += r_;
   }
+  boolean inCat(float x_, float y_) {
+    if ((x_ >= x-50) && ((x+50) >= x_)) {
+      if ((y_ >= y-50) && ((y+50) >= y_)) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
   void checkInBox() {
     if (x+50 >= width) {
       x = width - 50;
