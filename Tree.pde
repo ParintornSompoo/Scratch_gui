@@ -23,6 +23,10 @@ class Tree
       children.set(index, child);
     }
     
+    void removelastchild(){
+      children.remove(children.size()-1);
+    }
+    
     ArrayList<Node> getchildren(){
       return children;
     }
@@ -43,7 +47,14 @@ class Tree
     root = new Node(box);
     if(box!= null ){
       if(box.type.equals("if-else")){
-        Node conditionchild = new Node(null);
+        //Node conditionchild = new Node(null);
+        Node conditionchild;
+        if(box.command.contains("true")){
+          conditionchild = new Node(new Box(0,0,0,0, "true", ""));
+        }
+        else{
+          conditionchild = new Node(new Box(0,0,0,0, "false", ""));
+        }
         Node truechild = new Node(null);
         Node falsechild = new Node(null);
         root.addchild(conditionchild);
@@ -79,11 +90,10 @@ class Tree
     root.addchild(child);
     setLinkedPosition(root,child);
   }
-  void addLoopchild(Tree trees,int n){
+  void addLoopchild(Tree trees){
     Node child = trees.getRoot();
-    for(int i =0;i<n;i++){
-      root.addchild(child);
-    }
+    root.changeAnychild(child,0);
+    setLinkedPosition(root,child);
   }
   Node getRoot(){
     return root;
@@ -127,16 +137,37 @@ class Tree
     else if(roottype.equals("if-else")){
       if(children.size()>=3){
         if(children.get(0).getBox() != null){
-          if("true".equals(children.get(0).getBoxCommand()) && children.get(1).getBox() != null){
+          if("true".equals(children.get(0).getBoxType()) && children.get(1).getBox() != null){
             actionlist.addAll(travers(children.get(1)));
           }
-          else if("false".equals(children.get(0).getBoxCommand()) && children.get(2).getBox() != null){
+          else if("false".equals(children.get(0).getBoxType()) && children.get(2).getBox() != null){
             actionlist.addAll(travers(children.get(2)));
           }
         }
         if(children.size()>3){
-          actionlist.addAll(travers(children.get(children.size()-1)));
+          actionlist.addAll(travers(children.get(3)));
         }
+      }
+    }
+    else if(roottype.equals("loop")){
+      if(children.size()==1){
+        if(children.get(0).getBox() != null){
+          int round = Integer.parseInt(rootbox.textBox.text);
+          ArrayList<Box> inloop = travers(children.get(0));
+          for(int i=0;i<round ;i++){
+            actionlist.addAll(inloop);
+          }
+        }
+      }
+      if(children.size()>1){
+        if(children.get(0).getBox() != null){
+          int round = Integer.parseInt(rootbox.textBox.text);
+          ArrayList<Box> inloop = travers(children.get(0));
+          for(int i=0;i<round ;i++){
+            actionlist.addAll(inloop);
+          }
+        }
+        actionlist.addAll(travers(children.get(1)));
       }
     }
     return actionlist;
@@ -192,7 +223,7 @@ class Tree
     float posx = r.getBox().x;
     float posy = r.getBox().y;
     Node n = getChildByPosition(root,posx,posy);
-    if(n!= null){
+    if(n!= null){ //&& !n.equals(r)
       return true;
     }
     return false;
@@ -217,26 +248,35 @@ class Tree
     Node n = getChildByPosition(root,posx,posy);
     removeNode(root,n);
   }
-  void setLinkedPosition(Node r,Node n){
-    ArrayList<Node> children = n.getchildren();
-    ArrayList<Node> rootchild = r.getchildren();
-    if(n.getBox()!=null){
-      if(n.equals(rootchild.get(rootchild.size()-1))){
-        n.getBox().connectBelow(r.getBox());
-        if(children.size()>0){
-          setLinkedPosition(n,children.get(children.size()-1));
-          if(children.size()>=3){
-            setLinkedPosition(n,children.get(1));
-          }
+  void setLinkedPosition(Node top,Node below){
+    if(below.getBox()!=null){
+      ArrayList<Node> topchildren = top.getchildren();
+      ArrayList<Node> belowchildren = below.getchildren();
+      Box topbox = top.getBox();
+      Box belowbox = below.getBox();
+      if(topbox.type.equals("oneLine") || topbox.type.equals("if-else")){
+        if(below.equals(topchildren.get(topchildren.size()-1))){
+          belowbox.connectBelow(topbox);
+        }
+        else if(below.equals(topchildren.get(1))){
+          belowbox.connectIndent(topbox);
         }
       }
-      else if(n.equals(rootchild.get(1))){
-        n.getBox().connectIndent(r.getBox());
-        if(children.size()>0){
-          setLinkedPosition(n,children.get(children.size()-1));
-          if(children.size()>=3){
-            setLinkedPosition(n,children.get(1));
-          }
+      else if(topbox.type.equals("loop")){
+        if(below.equals(topchildren.get(0))){
+          belowbox.connectIndent(topbox);
+        }
+        if(topchildren.size() >1 && below.equals(topchildren.get(1))){
+          belowbox.connectBelow(topbox);
+        }
+      }
+      if(belowchildren.size()>0){
+        setLinkedPosition(below,belowchildren.get(belowchildren.size()-1));
+        if(belowchildren.size()>=3){
+          setLinkedPosition(below,belowchildren.get(1));
+        }
+        else if(belowchildren.size()>=2){
+          setLinkedPosition(below,belowchildren.get(0));
         }
       }
     }

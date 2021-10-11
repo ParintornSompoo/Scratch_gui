@@ -34,13 +34,30 @@ void mousePressed() {
       int y = height/10 + (int)(choosenbox.h * 2.25 * (arraytree.size() % 10));
       Tree tree = new Tree(new Box(x,y,120,30,choosenbox.type,choosenbox.command));
       arraytree.add(tree);
+      break;
     }
   }
-  for(Tree tree : arraytree){
-    if(tree.isClicked()){
-      clickedTree  = tree;
+  for(Tree ctree : arraytree){
+    if(ctree.isClicked()){
+      clickedTree  = ctree;
+      break;
     }
   }
+  //if(clickedTree != null){
+  //  for(Tree toptree : arraytree){
+  //    if(clickedTree.getRootBox().isBelow(toptree.getRootBox())){
+  //      toptree.getRoot().removelastchild();
+  //    }
+  //    else if(clickedTree.getRootBox().isIndent(toptree.getRootBox())){
+  //      if(toptree.getRoot().getBoxType().equals("if-else")){
+  //        toptree.addIfstatement(new Tree(null));
+  //      }
+  //      else if(toptree.getRoot().getBoxType().equals("loop")){
+        
+  //      }
+  //    }
+  //  }
+  //}
   for (Tree tree : arraytree) {
     tree.getRootBox().textBox.PRESSED(mouseX - tree.getRootBox().x,mouseY - tree.getRootBox().y);
   }
@@ -50,13 +67,20 @@ void mouseDragged() {
   if(clickedTree != null){
     clickedTree.drag();
     for(Tree toptree : arraytree){
-      if(toptree.containChild(clickedTree)){
-        toptree.removechild(clickedTree);
-      }
       if(toptree.getRootBox().type.equals("if-else")){
         if(clickedTree.getRootBox().isIndent(toptree.getRootBox())){
           toptree.addIfstatement(new Tree(null));
+          break;
         }
+      }
+      if(toptree.getRootBox().type.equals("loop")){
+        if(clickedTree.getRootBox().isIndent(toptree.getRootBox())){
+          toptree.addLoopchild(new Tree(null));
+          break;
+        }
+      }
+      if(toptree.containChild(clickedTree)){
+        toptree.removechild(clickedTree);
       }
     }
   }
@@ -90,22 +114,21 @@ void mouseReleased() {
   else{
     if(clickedTree!=null){
       for(Tree tree:arraytree){
-        if(clickedTree.getRootBox().isBelow(tree.getRootBox())){
-          if(!tree.containChild(clickedTree) && !tree.havechild()){
-            tree.addchild(clickedTree);
+        if(clickedTree.getRootBox().isBelow(tree.getRootBox()) && !tree.containChild(clickedTree) && !tree.havechild()){
+          tree.addchild(clickedTree);
+          break;
+        }
+        if(tree.getRootBox().type.equals("if-else")){
+          if(clickedTree.getRootBox().isIndent(tree.getRootBox()) && !tree.containChild(clickedTree)){
+            tree.addIfstatement(clickedTree);
             break;
           }
         }
-        if(tree.getRootBox().type.equals("if-else")){
-          if(clickedTree.getRootBox().isIndent(tree.getRootBox())){
-            if(!tree.containChild(clickedTree)){
-              tree.addIfstatement(clickedTree);
-              break;
-            }
-          }
-        }
         else if(tree.getRootBox().type.equals("loop")){
-          
+          if(clickedTree.getRootBox().isIndent(tree.getRootBox()) && !tree.containChild(clickedTree)){
+            tree.addLoopchild(clickedTree);
+            break;
+          }
         }
       }
     }
